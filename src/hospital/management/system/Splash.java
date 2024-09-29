@@ -102,19 +102,6 @@ public class Splash extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public static void main(String args[]) {
-//        Splash MySplash = new Splash();
-//        MySplash.setVisible(true);
-//        try {
-//            for (int i = 0; i < 100; i++) {
-//                Thread.sleep(100);
-//                MySplash.MyProgress.setValue(i);
-//                MySplash.Percent.setText(i+"%");
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        new Login().setVisible(true);
-//        MySplash.dispose();
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {

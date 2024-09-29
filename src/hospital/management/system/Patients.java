@@ -242,7 +242,7 @@ public class Patients extends javax.swing.JFrame {
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 11, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         jLabel1.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
@@ -362,7 +362,7 @@ public class Patients extends javax.swing.JFrame {
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(PatLogoies, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(PatBG, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addContainerGap(46, Short.MAX_VALUE))))
+                        .addContainerGap(35, Short.MAX_VALUE))))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -409,12 +409,13 @@ public class Patients extends javax.swing.JFrame {
                     .addComponent(UpdateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, 0)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -466,37 +467,62 @@ public class Patients extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void AddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddBtnActionPerformed
+    private void UpdateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_AddBtnActionPerformed
+    }//GEN-LAST:event_UpdateBtnActionPerformed
 
-    private void DeleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteBtnActionPerformed
+    private void UpdateBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_UpdateBtnMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_DeleteBtnActionPerformed
-
-    private void PatClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PatClearActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_PatClearActionPerformed
+        if(PatId.getText().isEmpty() || PatName.getText().isBlank() || PatAdd.getText().isBlank() || PatPhone.getText().isBlank() || PatAge.getText().isBlank() || PatLogoies.getText().isBlank()){
+            JOptionPane.showMessageDialog(this, "Missing Information");
+        }else{
+            try{
+                Con = (Connection) DriverManager.getConnection(url, username,password);
+                String Query = "Update User1.PATIENTTBL set PATNAME='"
+                + PatName.getText() + "', PATADDR='"
+                + PatAdd.getText() + "', PATPHONE='"
+                + PatPhone.getText() + "', PATAGE='"
+                + PatAge.getText() + "', PATGENDER='"
+                + PatGender.getSelectedItem().toString() + "', PATGRP='"
+                + PatBG.getSelectedItem().toString() + "', PATHOLOGIES='"
+                + PatLogoies.getText() + "' Where PATID="
+                + PatId.getText();
+                Statement Add = Con.createStatement();
+                Add.executeUpdate(Query);
+                JOptionPane.showMessageDialog(this, "Patient Updated Successfully");
+                Selectional();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_UpdateBtnMouseClicked
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton7ActionPerformed
 
-    private void UpdateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateBtnActionPerformed
+    private void jButton7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton7MouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_UpdateBtnActionPerformed
+        new HomeForm().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton7MouseClicked
 
-    private void Selectional(){
-        try{
-            Con = (Connection) DriverManager.getConnection(url, username,password);
-            St = Con.createStatement();
-            Rs = St.executeQuery("select * from User1.PATIENTTBL");
-            PatientTable.setModel(DbUtils.resultSetToTableModel(Rs));
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-    
+    private void PatientTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PatientTableMouseClicked
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) PatientTable.getModel();
+        int Myindex = PatientTable.getSelectedRow();
+        PatId.setText(model.getValueAt(Myindex, 0).toString());
+        PatName.setText(model.getValueAt(Myindex, 1).toString());
+        PatAdd.setText(model.getValueAt(Myindex, 2).toString());
+        PatPhone.setText(model.getValueAt(Myindex, 3).toString());
+        PatAge.setText(model.getValueAt(Myindex, 4).toString());
+        PatLogoies.setText(model.getValueAt(Myindex, 7).toString());
+    }//GEN-LAST:event_PatientTableMouseClicked
+
+    private void PatClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PatClearActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_PatClearActionPerformed
+
     private void PatClearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PatClearMouseClicked
         PatId.setText("");
         PatName.setText("");
@@ -505,6 +531,33 @@ public class Patients extends javax.swing.JFrame {
         PatPhone.setText("");
         PatLogoies.setText("");
     }//GEN-LAST:event_PatClearMouseClicked
+
+    private void DeleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_DeleteBtnActionPerformed
+
+    private void DeleteBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DeleteBtnMouseClicked
+        // TODO add your handling code here:
+        if(PatId.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this, "Enter The Patient To Be Deleted");
+        }else{
+            try{
+                Con = (Connection) DriverManager.getConnection(url, username,password);
+                String Id = PatId.getText();
+                String Query = "Delete from User1.PATIENTTBL where PATID="+Id;
+                Statement Add = Con.createStatement();
+                Add.executeUpdate(Query);
+                Selectional();
+                JOptionPane.showMessageDialog(this, "Patient Successfully Deleted");
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_DeleteBtnMouseClicked
+
+    private void AddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_AddBtnActionPerformed
 
     private void AddBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AddBtnMouseClicked
         if(PatId.getText().isEmpty() || PatName.getText().isEmpty() || PatAdd.getText().isEmpty() || PatPhone.getText().isEmpty() || PatAge.getText().isEmpty() || PatLogoies.getText().isEmpty())
@@ -536,69 +589,17 @@ public class Patients extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_jLabel10MouseClicked
 
-    private void PatientTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PatientTableMouseClicked
-        // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel) PatientTable.getModel();
-        int Myindex = PatientTable.getSelectedRow();
-        PatId.setText(model.getValueAt(Myindex, 0).toString());
-        PatName.setText(model.getValueAt(Myindex, 1).toString());
-        PatAdd.setText(model.getValueAt(Myindex, 2).toString());
-        PatPhone.setText(model.getValueAt(Myindex, 3).toString());
-        PatAge.setText(model.getValueAt(Myindex, 4).toString());
-        PatLogoies.setText(model.getValueAt(Myindex, 7).toString());
-    }//GEN-LAST:event_PatientTableMouseClicked
-
-    private void DeleteBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DeleteBtnMouseClicked
-        // TODO add your handling code here:
-        if(PatId.getText().isEmpty()){
-            JOptionPane.showMessageDialog(this, "Enter The Patient To Be Deleted");
-        }else{
-            try{
-                Con = (Connection) DriverManager.getConnection(url, username,password);
-                String Id = PatId.getText();
-                String Query = "Delete from User1.PATIENTTBL where PATID="+Id;
-                Statement Add = Con.createStatement();
-                Add.executeUpdate(Query);
-                Selectional();
-                JOptionPane.showMessageDialog(this, "Patient Successfully Deleted");
-            }catch(Exception e){
-                e.printStackTrace();
-            }
+    private void Selectional(){
+        try{
+            Con = (Connection) DriverManager.getConnection(url, username,password);
+            St = Con.createStatement();
+            Rs = St.executeQuery("select * from User1.PATIENTTBL");
+            PatientTable.setModel(DbUtils.resultSetToTableModel(Rs));
+        }catch(Exception e){
+            e.printStackTrace();
         }
-    }//GEN-LAST:event_DeleteBtnMouseClicked
-
-    private void UpdateBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_UpdateBtnMouseClicked
-        // TODO add your handling code here:
-        if(PatId.getText().isEmpty() || PatName.getText().isBlank() || PatAdd.getText().isBlank() || PatPhone.getText().isBlank() || PatAge.getText().isBlank() || PatLogoies.getText().isBlank()){
-            JOptionPane.showMessageDialog(this, "Missing Information");
-        }else{
-            try{
-                Con = (Connection) DriverManager.getConnection(url, username,password);
-                String Query = "Update User1.PATIENTTBL set PATNAME='" 
-                        + PatName.getText() + "', PATADDR='" 
-                        + PatAdd.getText() + "', PATPHONE='" 
-                        + PatPhone.getText() + "', PATAGE='" 
-                        + PatAge.getText() + "', PATGENDER='" 
-                        + PatGender.getSelectedItem().toString() + "', PATGRP='" 
-                        + PatBG.getSelectedItem().toString() + "', PATHOLOGIES='" 
-                        + PatLogoies.getText() + "' Where PATID=" 
-                        + PatId.getText();
-                Statement Add = Con.createStatement();
-                Add.executeUpdate(Query);
-                JOptionPane.showMessageDialog(this, "Patient Updated Successfully");
-                Selectional();
-            }catch(Exception e){
-                e.printStackTrace();
-            }
-        }
-    }//GEN-LAST:event_UpdateBtnMouseClicked
-
-    private void jButton7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton7MouseClicked
-        // TODO add your handling code here:
-        new HomeForm().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jButton7MouseClicked
-
+    }
+    
     /**
      * @param args the command line arguments
      */
